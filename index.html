@@ -46,12 +46,38 @@
   
         <button class="btn btn-success" onclick="selectMapLocation()">Select Location</button>
   
-        <button class="btn btn-success" onclick="submitform()">Submit</button>
+        <button class="btn btn-success" id='submit-btn' style="display: none;" onclick="submitform()">Submit</button>
       </div>
-      <div id="popup">
+      <!-- <hr>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+  <label class="btn btn-secondary active">
+    <input type="radio" name="options" id="option1" autocomplete="off" checked> All
+  </label>
+  <label class="btn btn-secondary">
+    <input type="radio" name="options" id="option2" autocomplete="off"> Clothes
+  </label>
+  <label class="btn btn-secondary">
+    <input type="radio" name="options" id="option3" autocomplete="off"> Food
+  </label>
+</div>
+<hr> -->
+      <div id="popup" class="card" style="width: 18rem;display:none">
+  <img id='popup-img'  alt="" height="80" >
+  <div class="card-body">
+  <h5 id='popup-name'></h5>
+    <b><p class="card-text"> Center Type </p></b> 
+    <p class="card-text" id='popup-type'></p>
+      <b><p class="card-text"> Center Timing </p></b> 
+    <p class="card-text" id='popup-time'></p>
+      <b><p class="card-text"> Functional : </p></b> 
+    <p class="card-text" id='popup-functional'></p>
+  
+  </div>
+</div>
+      <div >
         <img src="#" id='popup-img' class="mb-3" alt="" srcset="" >
         <h3 id='popup-type'></h3>
-        <p id='popup-name'></p>
+        
       </div>
     </div>
     

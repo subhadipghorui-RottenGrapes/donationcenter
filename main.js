@@ -172,25 +172,28 @@ return new ol.style.Style({
   }
 });
 map.addLayer(master_points);
-fetch(
-  "https://f4uhoylz66.execute-api.ap-south-1.amazonaws.com/dev/donationcenter",
-  {
-    method: "GET",
-    headers: new Headers({
-      "Access-Control-Allow-Origin": "*",
-    }),
-  }
-)
-  .then((res) => res.json())
-  .then((data) => {
-    //add all points to map
-    var allPoints = dynamoDBtoGeojson(data);
-   
-  master_points_source.addFeatures(
-    new ol.format.GeoJSON().readFeatures(allPoints)
-  );
-  });
+function fetchdata() {
+  fetch(
+    "https://f4uhoylz66.execute-api.ap-south-1.amazonaws.com/prod/donationcenter",
+    // {
+    //   method: "GET",
+    //   headers: new Headers({
+    //     "Access-Control-Allow-Origin": "*",
+    //   }),
+    // }
 
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      //add all points to map
+      var allPoints = dynamoDBtoGeojson(data);
+      master_points_source.clear()
+      master_points_source.addFeatures(
+        new ol.format.GeoJSON().readFeatures(allPoints)
+      );
+    });
+}
+fetchdata();
 var img = ''
 function readFile() {
   if (this.files && this.files[0]) {
@@ -227,12 +230,10 @@ function submitform() {
     
       //add new entry
       fetch(
-        "https://f4uhoylz66.execute-api.ap-south-1.amazonaws.com/dev/donationcenter",
+        "https://f4uhoylz66.execute-api.ap-south-1.amazonaws.com/prod/donationcenter",
         {
           method: "POST",
-          headers: new Headers({
-            "Access-Control-Allow-Origin": "*",
-          }),
+    
           body: JSON.stringify({
             data: bodyParam,
             geometry: {
@@ -252,6 +253,15 @@ function submitform() {
         .then((data) => {
           console.log(data);
           img = "";
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Added " + data['name'] + " successfully",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          fetchdata();
+           clearform();
         });
   } else {
 Swal.fire({
@@ -266,8 +276,15 @@ Swal.fire({
 
 function selectMapLocation() {
   add_location.setVisible(true);
+  document.getElementById('submit-btn').style.display = 'block'
 }
 
+function clearform() {
+  add_location.setVisible(false);
+  document.getElementById("place_name").value = "";
+  document.getElementById("place_time").value = "";
+  document.getElementById("exampleFormControlFile1").value = "";
+}
 
 
 
@@ -313,6 +330,10 @@ map.on('click', function (evt) {
     document.getElementById("popup-type").innerHTML = feature.getProperties().type;
      document.getElementById("popup-name").innerHTML =
        feature.getProperties().name;
+     document.getElementById("popup-time").innerHTML =
+       feature.getProperties().time;
+  document.getElementById("popup-functional").innerHTML =
+    feature.getProperties().functional;
   } else {
     document.getElementById("popup").style.display = "none";
 
