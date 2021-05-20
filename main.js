@@ -175,12 +175,6 @@ map.addLayer(master_points);
 function fetchdata() {
   fetch(
     "https://f4uhoylz66.execute-api.ap-south-1.amazonaws.com/prod/donationcenter",
-    // {
-    //   method: "GET",
-    //   headers: new Headers({
-    //     "Access-Control-Allow-Origin": "*",
-    //   }),
-    // }
 
   )
     .then((res) => res.json())
