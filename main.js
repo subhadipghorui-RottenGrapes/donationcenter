@@ -126,6 +126,67 @@ var map = new ol.Map({
     zoom: 6,
   }),
 });
+// add geocoder 
+//Instantiate with some options and add the Control
+var geocoder = new Geocoder('nominatim', {
+  provider: 'osm',
+  lang: 'en',
+  placeholder: 'Search for ...',
+  limit: 5,
+  debug: false,
+  autoComplete: true,
+  keepOpen: true
+});
+map.addControl(geocoder);
+
+// filter for type
+var sub1 = new ol.control.Bar({
+  toggleOne: true,
+  controls: [
+    new ol.control.Toggle({
+      html: "All",
+      autoActivate: true,
+      onToggle: function (b) {
+        showData("all");
+      },
+    }),
+    new ol.control.Toggle({
+      html: '<i class="fas fa-utensils"></i>',
+      onToggle: function (b) {
+         showData("food");
+      },
+    }),
+    new ol.control.Toggle({
+      html: '<i class="fas fa-tshirt"></i>',
+      onToggle: function (b) {
+         showData("clothes");
+      },
+    }),
+  ],
+});
+var mainbar = new ol.control.Bar({
+  controls: [
+    new ol.control.Toggle({
+      html: '<i class="fas fa-align-justify"></i>',
+      // First level nested control bar
+      bar: sub1,
+      // onToggle: function () {
+      //   info();
+      // },
+    }),
+  ],
+  // position: "top-left",
+});
+mainbar.setPosition("top-left");
+map.addControl(mainbar);
+  
+//Listen when an address is chosen
+geocoder.on('addresschosen', function (evt) {
+	console.info(evt);
+  window.setTimeout(function () {
+    popup.show(evt.coordinate, evt.address.formatted);
+  }, 3000);
+});
 //add location marker
 var vectorSource = new ol.source.Vector({
   features: [new ol.Feature(new ol.geom.Point(map.getView().getCenter()))],
@@ -172,6 +233,7 @@ return new ol.style.Style({
   }
 });
 map.addLayer(master_points);
+   var allFetchedFeatures; 
 function fetchdata() {
   fetch(
     "https://f4uhoylz66.execute-api.ap-south-1.amazonaws.com/prod/donationcenter",
@@ -185,6 +247,7 @@ function fetchdata() {
       master_points_source.addFeatures(
         new ol.format.GeoJSON().readFeatures(allPoints)
       );
+      allFetchedFeatures = master_points_source.getFeatures()
     });
 }
 fetchdata();
@@ -340,3 +403,30 @@ $("#addBtn").click(function(){
 $("#minimize").click(function(){
   $(".form").removeClass("showForm");
 })
+
+
+function showData(data) {
+  var features = allFetchedFeatures;
+  master_points_source.clear()
+  if (data == "all") {
+    for (var i = 0; i < features.length; i++) {
+      master_points_source.addFeature(features[i])
+    }
+  } else if (data == "food") {
+    for (var i = 0; i < features.length; i++) {
+      if (features[i].getProperties().type == "food") {
+         master_points_source.addFeature(features[i]);
+      } else {
+        // features[i].style = { visibility: "hidden" };
+      }
+    }
+  } else if (data == "clothes") {
+    for (var i = 0; i < features.length; i++) {
+      if (features[i].getProperties().type == "clothes") {
+  master_points_source.addFeature(features[i]);
+      } else {
+        // features[i].style = { visibility: "hidden" };
+      }
+    }
+  }
+}
