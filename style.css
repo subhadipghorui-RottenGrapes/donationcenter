@@ -1,28 +1,105 @@
-.map{
-    width: 100%;
+body{
+    font-size: 12px;
 }
-.mapContainer{
+.map{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+/* .mapContainer{
     display: flex;
     height: 100vh;
+} */
+#addBtn{
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 2;
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    background-color: #003cff;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }
-.LeftPanel{
+#minimize{
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    width: 30px;
+    height: 30px;
+    color: #fff;
+    background-color: #003cff;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    transform: rotate(
+        45deg
+        );
+    cursor: pointer;
+}
+/* .LeftPanel{
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
+    position: fixed;
     z-index: 2;
     width: 300px;
-}
+} */
 .form{
     padding: 15px;
+    background-color: #fff;
+    z-index: 2;
+    position: absolute;
+    bottom: -20px;
+    left: 10px;
+    box-shadow: 0 5px 10px rgb(0 0 0 / 20%);
+    border-radius: 5px 5px 5px 25px;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+    max-width: 300px;
+}
+.form.showForm{
+    visibility: visible;
+    opacity: 1;
+    bottom: 10px;
 }
 .form .form-group{
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+.form .form-group label{
+    flex-basis: 30%;
+}
+.form .form-group input,.form .form-group select{
+    width: 70%;
 }
 #popup{
-    padding: 15px;
-    border-top: 1px solid #ccc;
+    position: fixed;
+    z-index: 5;
+    background: #fff;
+    width: 300px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    box-shadow: 0 5px 10px rgb(0 0 0 / 20%);
 }
 #popup-img{
-    width: auto;
-    max-width: 100%;
+    height: auto;
+    width: 100%;
     margin-bottom: 20px;
+}
+#popup-name{
+    text-transform: capitalize;
 }

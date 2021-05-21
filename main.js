@@ -333,3 +333,10 @@ map.on('click', function (evt) {
 
   }
 })
+
+$("#addBtn").click(function(){
+  $(".form").addClass("showForm");
+});
+$("#minimize").click(function(){
+  $(".form").removeClass("showForm");
+})
